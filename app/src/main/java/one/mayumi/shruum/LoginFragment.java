@@ -496,7 +496,6 @@ public class LoginFragment extends Fragment implements WalletInfoAdapter.OnInter
     }
 
     private void changeTorIconColor(int color) {
-        requireActivity();
         Activity activity = getActivity();
         if(activity != null && isAdded()) {
             activity.runOnUiThread(() -> {

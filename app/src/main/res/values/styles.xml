@@ -14,9 +14,9 @@
         <item name="gradientBottomColor">@color/classic_gradientBottomColor</item>
         <item name="favouriteColor">@color/classic_favouriteColor</item>
         <item name="softFavouriteColor">@color/classic_softFavouriteColor</item>
-        <item name="positiveColor">@color/classic_positiveColor</item>
+        <item name="positiveColor">@android:color/holo_green_light</item>
         <item name="negativeColor">@color/classic_negativeColor</item>
-        <item name="neutralColor">@color/classic_neutralColor</item>
+        <item name="neutralColor">@android:color/holo_green_light</item>
         <item name="streetColorA">@color/classic_streetColorA</item>
         <item name="streetColorB">@color/classic_streetColorB</item>
         <item name="noticeColor">@color/classic_noticeColor</item>
@@ -99,6 +99,7 @@
         <item name="android:textSize">32sp</item>
         <!--item name="android:textColor">@color/moneroBlack</item-->
         <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/roboto_mono</item>
     </style>
 
     <style name="MoneroText.Balance.Orange">

@@ -97,11 +97,6 @@ public class WalletFragment extends Fragment
 
         tvStreetView = view.findViewById(R.id.tvStreetView);
         llBalance = view.findViewById(R.id.llBalance);
-        ((ProgressBar) view.findViewById(R.id.pbExchange)).getIndeterminateDrawable().
-                setColorFilter(
-                        ThemeHelper.getThemedColor(getContext(), R.attr.colorPrimaryVariant),
-                        android.graphics.PorterDuff.Mode.MULTIPLY);
-
         tvProgress = view.findViewById(R.id.tvProgress);
         pbProgress = view.findViewById(R.id.pbProgress);
         tvBalance = view.findViewById(R.id.tvBalance);
