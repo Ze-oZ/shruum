@@ -333,48 +333,7 @@ public class Helper {
     }
 
     static public boolean useCrazyPass(Context context) {
-        File flagFile = new File(getWalletRoot(context), NOCRAZYPASS_FLAGFILE);
-        return !flagFile.exists();
-    }
-
-    // try to figure out what the real wallet password is given the user password
-    // which could be the actual wallet password or a (maybe malformed) CrAzYpass
-    // or the password used to derive the CrAzYpass for the wallet
-    static public String getWalletPassword(Context context, String walletName, String password) {
-        String walletPath = new File(getWalletRoot(context), walletName + ".keys").getAbsolutePath();
-
-        // try with entered password (which could be a legacy password or a CrAzYpass)
-        if (WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, password)) {
-            return password;
-        }
-
-        // maybe this is a malformed CrAzYpass?
-        String possibleCrazyPass = CrazyPassEncoder.reformat(password);
-        if (possibleCrazyPass != null) { // looks like a CrAzYpass
-            if (WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, possibleCrazyPass)) {
-                return possibleCrazyPass;
-            }
-        }
-
-        // generate & try with CrAzYpass
-        String crazyPass = KeyStoreHelper.getCrazyPass(context, password);
-        if (WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, crazyPass)) {
-            return crazyPass;
-        }
-
-        // or maybe it is a broken CrAzYpass? (of which we have two variants)
-        String brokenCrazyPass2 = KeyStoreHelper.getBrokenCrazyPass(context, password, 2);
-        if ((brokenCrazyPass2 != null)
-                && WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, brokenCrazyPass2)) {
-            return brokenCrazyPass2;
-        }
-        String brokenCrazyPass1 = KeyStoreHelper.getBrokenCrazyPass(context, password, 1);
-        if ((brokenCrazyPass1 != null)
-                && WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, brokenCrazyPass1)) {
-            return brokenCrazyPass1;
-        }
-
-        return null;
+        return false;
     }
 
     static AlertDialog openDialog = null; // for preventing opening of multiple dialogs
@@ -421,7 +380,7 @@ public class Helper {
 
             @Override
             protected Boolean doInBackground(Void... unused) {
-                return processPasswordEntry(context, wallet, pass, fingerprintUsed, action);
+                return processPasswordEntry(wallet, pass, fingerprintUsed, action);
             }
 
             @Override
@@ -576,10 +535,9 @@ public class Helper {
         void fail(String walletName);
     }
 
-    static private boolean processPasswordEntry(Context context, String walletName, String pass, boolean fingerprintUsed, PasswordAction action) {
-        String walletPassword = Helper.getWalletPassword(context, walletName, pass);
-        if (walletPassword != null) {
-            action.act(walletName, walletPassword, fingerprintUsed);
+    static private boolean processPasswordEntry(String walletName, String pass, boolean fingerprintUsed, PasswordAction action) {
+        if (pass != null) {
+            action.act(walletName, pass, fingerprintUsed);
             return true;
         } else {
             action.fail(walletName);

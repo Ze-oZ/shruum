@@ -76,7 +76,6 @@ public class GenerateReviewFragment extends Fragment {
     private ScrollView scrollview;
 
     private ProgressBar pbProgress;
-    private TextView tvWalletPassword;
     private TextView tvWalletAddress;
     private FrameLayout flWalletMnemonic;
     private TextView tvWalletMnemonic;
@@ -85,7 +84,6 @@ public class GenerateReviewFragment extends Fragment {
     private TextView tvWalletSpendKey;
     private ImageButton bCopyAddress;
     private LinearLayout llAdvancedInfo;
-    private LinearLayout llPassword;
     private LinearLayout llMnemonic;
     private LinearLayout llSpendKey;
     private LinearLayout llViewKey;
@@ -106,7 +104,6 @@ public class GenerateReviewFragment extends Fragment {
 
         scrollview = view.findViewById(R.id.scrollview);
         pbProgress = view.findViewById(R.id.pbProgress);
-        tvWalletPassword = view.findViewById(R.id.tvWalletPassword);
         tvWalletAddress = view.findViewById(R.id.tvWalletAddress);
         tvWalletViewKey = view.findViewById(R.id.tvWalletViewKey);
         tvWalletSpendKey = view.findViewById(R.id.tvWalletSpendKey);
@@ -116,7 +113,6 @@ public class GenerateReviewFragment extends Fragment {
         bCopyAddress = view.findViewById(R.id.bCopyAddress);
         bAdvancedInfo = view.findViewById(R.id.bAdvancedInfo);
         llAdvancedInfo = view.findViewById(R.id.llAdvancedInfo);
-        llPassword = view.findViewById(R.id.llPassword);
         llMnemonic = view.findViewById(R.id.llMnemonic);
         llSpendKey = view.findViewById(R.id.llSpendKey);
         llViewKey = view.findViewById(R.id.llViewKey);
@@ -129,7 +125,6 @@ public class GenerateReviewFragment extends Fragment {
         boolean allowCopy = WalletManager.getInstance().getNetworkType() != NetworkType.NetworkType_Mainnet;
         tvWalletMnemonic.setTextIsSelectable(allowCopy);
         tvWalletSpendKey.setTextIsSelectable(allowCopy);
-        tvWalletPassword.setTextIsSelectable(allowCopy);
 
         bAccept.setOnClickListener(v -> acceptWallet());
         view.findViewById(R.id.bCopyViewKey).setOnClickListener(v -> copyViewKey());
@@ -178,7 +173,6 @@ public class GenerateReviewFragment extends Fragment {
     }
 
     void showDetails() {
-        tvWalletPassword.setText(null);
         new AsyncShow().executeOnExecutor(MoneroThreadPoolExecutor.MONERO_THREAD_POOL_EXECUTOR, walletPath);
     }
 
@@ -301,8 +295,6 @@ public class GenerateReviewFragment extends Fragment {
                     bAccept.setVisibility(View.VISIBLE);
                     bAccept.setEnabled(true);
                 }
-                llPassword.setVisibility(View.VISIBLE);
-                tvWalletPassword.setText(getPassword());
                 tvWalletAddress.setText(address);
                 tvWalletHeight.setText(NumberFormat.getInstance().format(height));
                 if (!seed.isEmpty()) {
@@ -478,7 +470,7 @@ public class GenerateReviewFragment extends Fragment {
             if (params.length != 2) return false;
             final String userPassword = params[0];
             final boolean fingerPassValid = Boolean.parseBoolean(params[1]);
-            newPassword = KeyStoreHelper.getCrazyPass(getActivity(), userPassword);
+            newPassword = userPassword;
             final boolean success = changeWalletPassword(newPassword);
             if (success) {
                 Context ctx = getActivity();

@@ -136,31 +136,6 @@
                 tools:text="1,878,151" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/llPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/header_top"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                style="@style/MoneroLabel.Heading"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:text="@string/generate_crazypass_label" />
-
-            <TextView
-                android:id="@+id/tvWalletPassword"
-                style="@style/MoneroText.Monospace"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/data_top"
-                android:textAlignment="center"
-                tools:text="2ExEN7droBLzWW2CEE2d7kv7E/iCZwNn:hKwUmg3:hg" />
-        </LinearLayout>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/bAccept"
             style="@style/MoneroButton"

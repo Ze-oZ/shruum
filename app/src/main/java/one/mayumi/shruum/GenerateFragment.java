@@ -449,9 +449,6 @@ public class GenerateFragment extends Fragment {
         String password = etWalletPassword.getEditText().getText().toString();
         boolean fingerprintAuthAllowed = ((SwitchMaterial) llFingerprintAuth.getChildAt(0)).isChecked();
 
-        // create the real wallet password
-        String crazyPass = KeyStoreHelper.getCrazyPass(getActivity(), password);
-
         long height = getHeight();
         if (height < 0) height = 0;
 
@@ -461,7 +458,7 @@ public class GenerateFragment extends Fragment {
                 if (fingerprintAuthAllowed) {
                     KeyStoreHelper.saveWalletUserPass(requireActivity(), name, password);
                 }
-                activityCallback.onGenerate(name, crazyPass);
+                activityCallback.onGenerate(name, password);
                 break;
             case TYPE_SEED:
                 if (!checkMnemonic()) return;
@@ -471,14 +468,14 @@ public class GenerateFragment extends Fragment {
                     KeyStoreHelper.saveWalletUserPass(requireActivity(), name, password);
                 }
                 final String offset = etSeedOffset.getEditText().getText().toString();
-                activityCallback.onGenerate(name, crazyPass, seed, offset, height);
+                activityCallback.onGenerate(name, password, seed, offset, height);
                 break;
             case TYPE_LEDGER:
                 bGenerate.setEnabled(false);
                 if (fingerprintAuthAllowed) {
                     KeyStoreHelper.saveWalletUserPass(requireActivity(), name, password);
                 }
-                activityCallback.onGenerateLedger(name, crazyPass, height);
+                activityCallback.onGenerateLedger(name, password, height);
                 break;
             case TYPE_KEY:
             case TYPE_VIEWONLY:
@@ -493,7 +490,7 @@ public class GenerateFragment extends Fragment {
                     if (fingerprintAuthAllowed) {
                         KeyStoreHelper.saveWalletUserPass(requireActivity(), name, password);
                     }
-                    activityCallback.onGenerate(name, crazyPass, address, viewKey, spendKey, height);
+                    activityCallback.onGenerate(name, password, address, viewKey, spendKey, height);
                 }
                 break;
         }

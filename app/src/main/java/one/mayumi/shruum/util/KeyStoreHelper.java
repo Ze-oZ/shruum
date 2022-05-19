@@ -57,60 +57,6 @@ import javax.security.auth.x500.X500Principal;
 import timber.log.Timber;
 
 public class KeyStoreHelper {
-
-    static {
-        System.loadLibrary("monerujo");
-    }
-
-    public static native byte[] slowHash(byte[] data, int brokenVariant);
-
-    static final private String RSA_ALIAS = "MonerujoRSA";
-
-    private static String getCrazyPass(Context context, String password, int brokenVariant) {
-        byte[] data = password.getBytes(StandardCharsets.UTF_8);
-        byte[] sig = null;
-        try {
-            KeyStoreHelper.createKeys(context, RSA_ALIAS);
-            sig = KeyStoreHelper.signData(RSA_ALIAS, data);
-            byte[] hash = slowHash(sig, brokenVariant);
-            if (hash == null) {
-                throw new IllegalStateException("Slow Hash is null!");
-            }
-            return CrazyPassEncoder.encode(hash);
-        } catch (NoSuchProviderException | NoSuchAlgorithmException |
-                InvalidAlgorithmParameterException | KeyStoreException |
-                InvalidKeyException | SignatureException ex) {
-            throw new IllegalStateException(ex);
-        }
-    }
-
-    public static String getCrazyPass(Context context, String password) {
-        if (Helper.useCrazyPass(context))
-            return getCrazyPass(context, password, 0);
-        else
-            return password;
-    }
-
-    public static String getBrokenCrazyPass(Context context, String password, int brokenVariant) {
-        // due to a link bug in the initial implementation, some crazypasses were built with
-        // prehash & variant == 1
-        // since there are wallets out there, we need to keep this here
-        // yes, it's a mess
-        if (isArm32() && (brokenVariant != 2)) return null;
-        return getCrazyPass(context, password, brokenVariant);
-    }
-
-    private static Boolean isArm32 = null;
-
-    public static boolean isArm32() {
-        if (isArm32 != null) return isArm32;
-        synchronized (KeyStoreException.class) {
-            if (isArm32 != null) return isArm32;
-            isArm32 = Build.SUPPORTED_ABIS[0].equals("armeabi-v7a");
-            return isArm32;
-        }
-    }
-
     public static boolean saveWalletUserPass(@NonNull Context context, String wallet, String password) {
         String walletKeyAlias = SecurityConstants.WALLET_PASS_KEY_PREFIX + wallet;
         byte[] data = password.getBytes(StandardCharsets.UTF_8);
