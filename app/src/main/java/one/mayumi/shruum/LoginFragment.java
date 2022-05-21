@@ -214,9 +214,16 @@ public class LoginFragment extends Fragment implements WalletInfoAdapter.OnInter
         if (id == R.id.action_network_settings) {
             startNodePrefs();
             return true;
+        } else if (id == R.id.action_scan_qr) {
+            startScan();
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void startScan() {
+        // TODO Start camera scanning intent. Upon scan, it will use the first wallet in the wallets list. This can be expanded upon later to have a preferred wallet setting.
     }
 
     private void openWallet(String name, boolean streetmode) {
