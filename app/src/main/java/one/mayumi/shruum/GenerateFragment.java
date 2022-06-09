@@ -54,6 +54,9 @@ import one.mayumi.shruum.widget.PasswordEntryView;
 import one.mayumi.shruum.widget.Toolbar;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -431,9 +434,14 @@ public class GenerateFragment extends Fragment {
         String name = etWalletName.getEditText().getText().toString();
         String password = etWalletPassword.getEditText().getText().toString();
         boolean fingerprintAuthAllowed = ((SwitchMaterial) llFingerprintAuth.getChildAt(0)).isChecked();
-
+        File file = new File(Helper.getWalletRoot(getActivity()), name+Helper.NOCRAZYPASS_FLAGFILE);
+        try {
+            touch(file, System.currentTimeMillis());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // create the real wallet password
-        String crazyPass = KeyStoreHelper.getCrazyPass(getActivity(), password);
+        String crazyPass = KeyStoreHelper.getCrazyPass(getActivity(), password, name);
 
         long height = getHeight();
         if (height < 0) height = 0;
@@ -620,5 +628,13 @@ public class GenerateFragment extends Fragment {
         }
 
         ledgerDialog.show();
+    }
+
+    public static void touch(File file, long timestamp) throws IOException {
+        if (!file.exists()) {
+            new FileOutputStream(file).close();
+        }
+
+        file.setLastModified(timestamp);
     }
 }

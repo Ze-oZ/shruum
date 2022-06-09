@@ -84,8 +84,8 @@ public class KeyStoreHelper {
         }
     }
 
-    public static String getCrazyPass(Context context, String password) {
-        if (Helper.useCrazyPass(context))
+    public static String getCrazyPass(Context context, String password, String walletName) {
+        if (Helper.useCrazyPass(context, walletName))
             return getCrazyPass(context, password, 0);
         else
             return password;

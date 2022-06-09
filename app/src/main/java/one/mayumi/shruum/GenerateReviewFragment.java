@@ -477,7 +477,7 @@ public class GenerateReviewFragment extends Fragment {
             if (params.length != 2) return false;
             final String userPassword = params[0];
             final boolean fingerPassValid = Boolean.parseBoolean(params[1]);
-            newPassword = KeyStoreHelper.getCrazyPass(getActivity(), userPassword);
+            newPassword = KeyStoreHelper.getCrazyPass(getActivity(), userPassword, walletName);
             final boolean success = changeWalletPassword(newPassword);
             if (success) {
                 Context ctx = getActivity();
