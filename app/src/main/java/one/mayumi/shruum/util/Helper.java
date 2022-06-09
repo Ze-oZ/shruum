@@ -333,8 +333,11 @@ public class Helper {
     }
 
     static public boolean useCrazyPass(Context context, String walletName) {
+        File originalFlagFile = new File(getWalletRoot(context), NOCRAZYPASS_FLAGFILE);
         File flagFile = new File(getWalletRoot(context), walletName+NOCRAZYPASS_FLAGFILE);
-        return !flagFile.exists();
+        if(originalFlagFile.exists()) {
+            return false;
+        } else return !flagFile.exists();
     }
 
     // try to figure out what the real wallet password is given the user password
