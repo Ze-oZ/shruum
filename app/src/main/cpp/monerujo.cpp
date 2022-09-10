@@ -96,7 +96,7 @@ void detachJVM(JNIEnv *jenv, int envStat) {
     }
 }
 
-struct MyWalletListener : Bitmonero::WalletListener {
+struct MyWalletListener : Monero::WalletListener {
     jobject jlistener;
 
     MyWalletListener(JNIEnv *env, jobject aListener) {
@@ -266,8 +266,8 @@ Java_one_mayumi_shruum_model_WalletManager_createWalletJ(JNIEnv *env, jobject in
     const char *_language = env->GetStringUTFChars(language, nullptr);
     Monero::NetworkType _networkType = static_cast<Monero::NetworkType>(networkType);
 
-    Bitmonero::Wallet *wallet =
-            Bitmonero::WalletManagerFactory::getWalletManager()->createWallet(
+    Monero::Wallet *wallet =
+            mnonero::WalletManagerFactory::getWalletManager()->createWallet(
                     std::string(_path),
                     std::string(_password),
                     std::string(_language),
@@ -287,8 +287,8 @@ Java_one_mayumi_shruum_model_WalletManager_openWalletJ(JNIEnv *env, jobject inst
     const char *_password = env->GetStringUTFChars(password, nullptr);
     Monero::NetworkType _networkType = static_cast<Monero::NetworkType>(networkType);
 
-    Bitmonero::Wallet *wallet =
-            Bitmonero::WalletManagerFactory::getWalletManager()->openWallet(
+    Monero::Wallet *wallet =
+            Monero::WalletManagerFactory::getWalletManager()->openWallet(
                     std::string(_path),
                     std::string(_password),
                     _networkType);
@@ -310,8 +310,8 @@ Java_one_mayumi_shruum_model_WalletManager_recoveryWalletJ(JNIEnv *env, jobject 
     const char *_offset = env->GetStringUTFChars(offset, nullptr);
     Monero::NetworkType _networkType = static_cast<Monero::NetworkType>(networkType);
 
-    Bitmonero::Wallet *wallet =
-            Bitmonero::WalletManagerFactory::getWalletManager()->recoveryWallet(
+    Monero::Wallet *wallet =
+            Monero::WalletManagerFactory::getWalletManager()->recoveryWallet(
                     std::string(_path),
                     std::string(_password),
                     std::string(_mnemonic),
@@ -344,8 +344,8 @@ Java_one_mayumi_shruum_model_WalletManager_createWalletFromKeysJ(JNIEnv *env, jo
     const char *_viewKeyString = env->GetStringUTFChars(viewKeyString, nullptr);
     const char *_spendKeyString = env->GetStringUTFChars(spendKeyString, nullptr);
 
-    Bitmonero::Wallet *wallet =
-            Bitmonero::WalletManagerFactory::getWalletManager()->createWalletFromKeys(
+    Monero::Wallet *wallet =
+            Monero::WalletManagerFactory::getWalletManager()->createWalletFromKeys(
                     std::string(_path),
                     std::string(_password),
                     std::string(_language),
@@ -381,8 +381,8 @@ Java_one_mayumi_shruum_model_WalletManager_createWalletFromDeviceJ(JNIEnv *env, 
     const char *_deviceName = env->GetStringUTFChars(deviceName, nullptr);
     const char *_subaddressLookahead = env->GetStringUTFChars(subaddressLookahead, nullptr);
 
-    Bitmonero::Wallet *wallet =
-            Bitmonero::WalletManagerFactory::getWalletManager()->createWalletFromDevice(
+    Monero::Wallet *wallet =
+            Monero::WalletManagerFactory::getWalletManager()->createWalletFromDevice(
                     std::string(_path),
                     std::string(_password),
                     _networkType,
@@ -402,7 +402,7 @@ Java_one_mayumi_shruum_model_WalletManager_walletExists(JNIEnv *env, jobject ins
                                                            jstring path) {
     const char *_path = env->GetStringUTFChars(path, nullptr);
     bool exists =
-            Bitmonero::WalletManagerFactory::getWalletManager()->walletExists(std::string(_path));
+            Monero::WalletManagerFactory::getWalletManager()->walletExists(std::string(_path));
     env->ReleaseStringUTFChars(path, _path);
     return static_cast<jboolean>(exists);
 }
@@ -415,7 +415,7 @@ Java_one_mayumi_shruum_model_WalletManager_verifyWalletPassword(JNIEnv *env, job
     const char *_keys_file_name = env->GetStringUTFChars(keys_file_name, nullptr);
     const char *_password = env->GetStringUTFChars(password, nullptr);
     bool passwordOk =
-            Bitmonero::WalletManagerFactory::getWalletManager()->verifyWalletPassword(
+            Monero::WalletManagerFactory::getWalletManager()->verifyWalletPassword(
                     std::string(_keys_file_name), std::string(_password), watch_only);
     env->ReleaseStringUTFChars(keys_file_name, _keys_file_name);
     env->ReleaseStringUTFChars(password, _password);
@@ -429,8 +429,8 @@ Java_one_mayumi_shruum_model_WalletManager_queryWalletDeviceJ(JNIEnv *env, jobje
                                                                  jstring password) {
     const char *_keys_file_name = env->GetStringUTFChars(keys_file_name, nullptr);
     const char *_password = env->GetStringUTFChars(password, nullptr);
-    Bitmonero::Wallet::Device device_type;
-    bool ok = Bitmonero::WalletManagerFactory::getWalletManager()->
+    Monero::Wallet::Device device_type;
+    bool ok = Monero::WalletManagerFactory::getWalletManager()->
             queryWalletDevice(device_type, std::string(_keys_file_name), std::string(_password));
     env->ReleaseStringUTFChars(keys_file_name, _keys_file_name);
     env->ReleaseStringUTFChars(password, _password);
@@ -445,7 +445,7 @@ Java_one_mayumi_shruum_model_WalletManager_findWallets(JNIEnv *env, jobject inst
                                                           jstring path) {
     const char *_path = env->GetStringUTFChars(path, nullptr);
     std::vector<std::string> walletPaths =
-            Bitmonero::WalletManagerFactory::getWalletManager()->findWallets(std::string(_path));
+            Monero::WalletManagerFactory::getWalletManager()->findWallets(std::string(_path));
     env->ReleaseStringUTFChars(path, _path);
     return cpp2java(env, walletPaths);
 }
@@ -456,7 +456,7 @@ JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_WalletManager_setDaemonAddressJ(JNIEnv *env, jobject instance,
                                                                 jstring address) {
     const char *_address = env->GetStringUTFChars(address, nullptr);
-    Bitmonero::WalletManagerFactory::getWalletManager()->setDaemonAddress(std::string(_address));
+    Monero::WalletManagerFactory::getWalletManager()->setDaemonAddress(std::string(_address));
     env->ReleaseStringUTFChars(address, _address);
 }
 
@@ -466,40 +466,40 @@ Java_one_mayumi_shruum_model_WalletManager_getDaemonVersion(JNIEnv *env,
                                                                jobject instance) {
     uint32_t version;
     bool isConnected =
-            Bitmonero::WalletManagerFactory::getWalletManager()->connected(&version);
+            Monero::WalletManagerFactory::getWalletManager()->connected(&version);
     if (!isConnected) version = 0;
     return version;
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_WalletManager_getBlockchainHeight(JNIEnv *env, jobject instance) {
-    return Bitmonero::WalletManagerFactory::getWalletManager()->blockchainHeight();
+    return Monero::WalletManagerFactory::getWalletManager()->blockchainHeight();
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_WalletManager_getBlockchainTargetHeight(JNIEnv *env,
                                                                         jobject instance) {
-    return Bitmonero::WalletManagerFactory::getWalletManager()->blockchainTargetHeight();
+    return Monero::WalletManagerFactory::getWalletManager()->blockchainTargetHeight();
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_WalletManager_getNetworkDifficulty(JNIEnv *env, jobject instance) {
-    return Bitmonero::WalletManagerFactory::getWalletManager()->networkDifficulty();
+    return Monero::WalletManagerFactory::getWalletManager()->networkDifficulty();
 }
 
 JNIEXPORT jdouble JNICALL
 Java_one_mayumi_shruum_model_WalletManager_getMiningHashRate(JNIEnv *env, jobject instance) {
-    return Bitmonero::WalletManagerFactory::getWalletManager()->miningHashRate();
+    return Monero::WalletManagerFactory::getWalletManager()->miningHashRate();
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_WalletManager_getBlockTarget(JNIEnv *env, jobject instance) {
-    return Bitmonero::WalletManagerFactory::getWalletManager()->blockTarget();
+    return Monero::WalletManagerFactory::getWalletManager()->blockTarget();
 }
 
 JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_WalletManager_isMining(JNIEnv *env, jobject instance) {
-    return static_cast<jboolean>(Bitmonero::WalletManagerFactory::getWalletManager()->isMining());
+    return static_cast<jboolean>(Monero::WalletManagerFactory::getWalletManager()->isMining());
 }
 
 JNIEXPORT jboolean JNICALL
@@ -509,7 +509,7 @@ Java_one_mayumi_shruum_model_WalletManager_startMining(JNIEnv *env, jobject inst
                                                           jboolean ignore_battery) {
     const char *_address = env->GetStringUTFChars(address, nullptr);
     bool success =
-            Bitmonero::WalletManagerFactory::getWalletManager()->startMining(std::string(_address),
+            Monero::WalletManagerFactory::getWalletManager()->startMining(std::string(_address),
                                                                              background_mining,
                                                                              ignore_battery);
     env->ReleaseStringUTFChars(address, _address);
@@ -518,7 +518,7 @@ Java_one_mayumi_shruum_model_WalletManager_startMining(JNIEnv *env, jobject inst
 
 JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_WalletManager_stopMining(JNIEnv *env, jobject instance) {
-    return static_cast<jboolean>(Bitmonero::WalletManagerFactory::getWalletManager()->stopMining());
+    return static_cast<jboolean>(Monero::WalletManagerFactory::getWalletManager()->stopMining());
 }
 
 JNIEXPORT jstring JNICALL
@@ -528,7 +528,7 @@ Java_one_mayumi_shruum_model_WalletManager_resolveOpenAlias(JNIEnv *env, jobject
     const char *_address = env->GetStringUTFChars(address, nullptr);
     bool _dnssec_valid = (bool) dnssec_valid;
     std::string resolvedAlias =
-            Bitmonero::WalletManagerFactory::getWalletManager()->resolveOpenAlias(
+            Monero::WalletManagerFactory::getWalletManager()->resolveOpenAlias(
                     std::string(_address),
                     _dnssec_valid);
     env->ReleaseStringUTFChars(address, _address);
@@ -540,7 +540,7 @@ Java_one_mayumi_shruum_model_WalletManager_setProxy(JNIEnv *env, jobject instanc
                                                        jstring address) {
     const char *_address = env->GetStringUTFChars(address, nullptr);
     bool rc =
-            Bitmonero::WalletManagerFactory::getWalletManager()->setProxy(std::string(_address));
+            Monero::WalletManagerFactory::getWalletManager()->setProxy(std::string(_address));
     env->ReleaseStringUTFChars(address, _address);
     return rc;
 }
@@ -551,8 +551,8 @@ Java_one_mayumi_shruum_model_WalletManager_setProxy(JNIEnv *env, jobject instanc
 JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_WalletManager_closeJ(JNIEnv *env, jobject instance,
                                                      jobject walletInstance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, walletInstance);
-    bool closeSuccess = Bitmonero::WalletManagerFactory::getWalletManager()->closeWallet(wallet,
+    Monero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, walletInstance);
+    bool closeSuccess = Monero::WalletManagerFactory::getWalletManager()->closeWallet(wallet,
                                                                                          false);
     if (closeSuccess) {
         MyWalletListener *walletListener = getHandle<MyWalletListener>(env, walletInstance,
@@ -576,7 +576,7 @@ Java_one_mayumi_shruum_model_WalletManager_closeJ(JNIEnv *env, jobject instance,
 JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_Wallet_getSeed(JNIEnv *env, jobject instance, jstring seedOffset) {
     const char *_seedOffset = env->GetStringUTFChars(seedOffset, nullptr);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     jstring seed = env->NewStringUTF(wallet->seed(std::string(_seedOffset)).c_str());
     env->ReleaseStringUTFChars(seedOffset, _seedOffset);
     return seed;
@@ -584,7 +584,7 @@ Java_one_mayumi_shruum_model_Wallet_getSeed(JNIEnv *env, jobject instance, jstri
 
 JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_Wallet_getSeedLanguage(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return env->NewStringUTF(wallet->getSeedLanguage().c_str());
 }
 
@@ -592,14 +592,14 @@ JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_Wallet_setSeedLanguage(JNIEnv *env, jobject instance,
                                                        jstring language) {
     const char *_language = env->GetStringUTFChars(language, nullptr);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->setSeedLanguage(std::string(_language));
     env->ReleaseStringUTFChars(language, _language);
 }
 
 JNIEXPORT jint JNICALL
 Java_one_mayumi_shruum_model_Wallet_getStatusJ(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->status();
 }
 
@@ -615,7 +615,7 @@ jobject newWalletStatusInstance(JNIEnv *env, int status, const std::string &erro
 
 JNIEXPORT jobject JNICALL
 Java_one_mayumi_shruum_model_Wallet_statusWithErrorString(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
 
     int status;
     std::string errorString;
@@ -628,7 +628,7 @@ JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_Wallet_setPassword(JNIEnv *env, jobject instance,
                                                    jstring password) {
     const char *_password = env->GetStringUTFChars(password, nullptr);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     bool success = wallet->setPassword(std::string(_password));
     env->ReleaseStringUTFChars(password, _password);
     return static_cast<jboolean>(success);
@@ -638,20 +638,20 @@ JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_Wallet_getAddressJ(JNIEnv *env, jobject instance,
                                                    jint accountIndex,
                                                    jint addressIndex) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return env->NewStringUTF(
             wallet->address((uint32_t) accountIndex, (uint32_t) addressIndex).c_str());
 }
 
 JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_Wallet_getPath(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return env->NewStringUTF(wallet->path().c_str());
 }
 
 JNIEXPORT jint JNICALL
 Java_one_mayumi_shruum_model_Wallet_nettype(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->nettype();
 }
 
@@ -662,7 +662,7 @@ JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_Wallet_getIntegratedAddress(JNIEnv *env, jobject instance,
                                                             jstring payment_id) {
     const char *_payment_id = env->GetStringUTFChars(payment_id, nullptr);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     std::string address = wallet->integratedAddress(_payment_id);
     env->ReleaseStringUTFChars(payment_id, _payment_id);
     return env->NewStringUTF(address.c_str());
@@ -670,13 +670,13 @@ Java_one_mayumi_shruum_model_Wallet_getIntegratedAddress(JNIEnv *env, jobject in
 
 JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_Wallet_getSecretViewKey(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return env->NewStringUTF(wallet->secretViewKey().c_str());
 }
 
 JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_Wallet_getSecretSpendKey(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return env->NewStringUTF(wallet->secretSpendKey().c_str());
 }
 
@@ -684,7 +684,7 @@ JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_Wallet_store(JNIEnv *env, jobject instance,
                                              jstring path) {
     const char *_path = env->GetStringUTFChars(path, nullptr);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     bool success = wallet->store(std::string(_path));
     if (!success) {
         LOGE("store() %s", wallet->errorString().c_str());
@@ -695,7 +695,7 @@ Java_one_mayumi_shruum_model_Wallet_store(JNIEnv *env, jobject instance,
 
 JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_Wallet_getFilename(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return env->NewStringUTF(wallet->filename().c_str());
 }
 
@@ -709,7 +709,7 @@ Java_one_mayumi_shruum_model_Wallet_initJ(JNIEnv *env, jobject instance,
     const char *_daemon_address = env->GetStringUTFChars(daemon_address, nullptr);
     const char *_daemon_username = env->GetStringUTFChars(daemon_username, nullptr);
     const char *_daemon_password = env->GetStringUTFChars(daemon_password, nullptr);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     bool status = wallet->init(_daemon_address, (uint64_t) upper_transaction_size_limit,
                                _daemon_username,
                                _daemon_password);
@@ -730,7 +730,7 @@ Java_one_mayumi_shruum_model_Wallet_setRestoreHeight(JNIEnv *env, jobject instan
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getRestoreHeight(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->getRefreshFromBlockHeight();
 }
 
@@ -739,7 +739,7 @@ Java_one_mayumi_shruum_model_Wallet_getRestoreHeight(JNIEnv *env, jobject instan
 
 JNIEXPORT jint JNICALL
 Java_one_mayumi_shruum_model_Wallet_getConnectionStatusJ(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->connected();
 }
 //TODO virtual void setTrustedDaemon(bool arg) = 0;
@@ -749,7 +749,7 @@ JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_Wallet_setProxy(JNIEnv *env, jobject instance,
                                                 jstring address) {
     const char *_address = env->GetStringUTFChars(address, nullptr);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     bool rc = wallet->setProxy(std::string(_address));
     env->ReleaseStringUTFChars(address, _address);
     return rc;
@@ -758,71 +758,71 @@ Java_one_mayumi_shruum_model_Wallet_setProxy(JNIEnv *env, jobject instance,
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getBalance(JNIEnv *env, jobject instance,
                                                   jint accountIndex) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->balance((uint32_t) accountIndex);
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getBalanceAll(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->balanceAll();
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getUnlockedBalance(JNIEnv *env, jobject instance,
                                                           jint accountIndex) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->unlockedBalance((uint32_t) accountIndex);
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getUnlockedBalanceAll(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->unlockedBalanceAll();
 }
 
 JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_Wallet_isWatchOnly(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return static_cast<jboolean>(wallet->watchOnly());
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getBlockChainHeight(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->blockChainHeight();
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getApproximateBlockChainHeight(JNIEnv *env,
                                                                       jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->approximateBlockChainHeight();
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getDaemonBlockChainHeight(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->daemonBlockChainHeight();
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getDaemonBlockChainTargetHeight(JNIEnv *env,
                                                                        jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->daemonBlockChainTargetHeight();
 }
 
 JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_Wallet_isSynchronizedJ(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return static_cast<jboolean>(wallet->synchronized());
 }
 
 JNIEXPORT jint JNICALL
 Java_one_mayumi_shruum_model_Wallet_getDeviceTypeJ(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
-    Bitmonero::Wallet::Device device_type = wallet->getDeviceType();
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
+    Monero::Wallet::Device device_type = wallet->getDeviceType();
     return static_cast<jint>(device_type);
 }
 
@@ -863,7 +863,7 @@ JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getAmountFromString(JNIEnv *env, jclass clazz,
                                                            jstring amount) {
     const char *_amount = env->GetStringUTFChars(amount, nullptr);
-    uint64_t x = Bitmonero::Wallet::amountFromString(_amount);
+    uint64_t x = Monero::Wallet::amountFromString(_amount);
     env->ReleaseStringUTFChars(amount, _amount);
     return x;
 }
@@ -871,7 +871,7 @@ Java_one_mayumi_shruum_model_Wallet_getAmountFromString(JNIEnv *env, jclass claz
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getAmountFromDouble(JNIEnv *env, jclass clazz,
                                                            jdouble amount) {
-    return Bitmonero::Wallet::amountFromDouble(amount);
+    return Monero::Wallet::amountFromDouble(amount);
 }
 
 JNIEXPORT jstring JNICALL
@@ -883,7 +883,7 @@ JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_Wallet_isPaymentIdValid(JNIEnv *env, jclass clazz,
                                                         jstring payment_id) {
     const char *_payment_id = env->GetStringUTFChars(payment_id, nullptr);
-    bool isValid = Bitmonero::Wallet::paymentIdValid(_payment_id);
+    bool isValid = Monero::Wallet::paymentIdValid(_payment_id);
     env->ReleaseStringUTFChars(payment_id, _payment_id);
     return static_cast<jboolean>(isValid);
 }
@@ -893,7 +893,7 @@ Java_one_mayumi_shruum_model_Wallet_isAddressValid(JNIEnv *env, jclass clazz,
                                                       jstring address, jint networkType) {
     const char *_address = env->GetStringUTFChars(address, nullptr);
     Monero::NetworkType _networkType = static_cast<Monero::NetworkType>(networkType);
-    bool isValid = Bitmonero::Wallet::addressValid(_address, _networkType);
+    bool isValid = Monero::Wallet::addressValid(_address, _networkType);
     env->ReleaseStringUTFChars(address, _address);
     return static_cast<jboolean>(isValid);
 }
@@ -904,37 +904,37 @@ Java_one_mayumi_shruum_model_Wallet_getPaymentIdFromAddress(JNIEnv *env, jclass 
                                                                jint networkType) {
     Monero::NetworkType _networkType = static_cast<Monero::NetworkType>(networkType);
     const char *_address = env->GetStringUTFChars(address, nullptr);
-    std::string payment_id = Bitmonero::Wallet::paymentIdFromAddress(_address, _networkType);
+    std::string payment_id = Monero::Wallet::paymentIdFromAddress(_address, _networkType);
     env->ReleaseStringUTFChars(address, _address);
     return env->NewStringUTF(payment_id.c_str());
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getMaximumAllowedAmount(JNIEnv *env, jclass clazz) {
-    return Bitmonero::Wallet::maximumAllowedAmount();
+    return Monero::Wallet::maximumAllowedAmount();
 }
 
 JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_Wallet_startRefresh(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->startRefresh();
 }
 
 JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_Wallet_pauseRefresh(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->pauseRefresh();
 }
 
 JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_Wallet_refresh(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return static_cast<jboolean>(wallet->refresh());
 }
 
 JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_Wallet_refreshAsync(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->refreshAsync();
 }
 
@@ -943,7 +943,7 @@ Java_one_mayumi_shruum_model_Wallet_refreshAsync(JNIEnv *env, jobject instance) 
 //virtual void rescanBlockchainAsync() = 0;
 JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_Wallet_rescanBlockchainAsyncJ(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->rescanBlockchainAsync();
 }
 
@@ -960,11 +960,11 @@ Java_one_mayumi_shruum_model_Wallet_createTransactionJ(JNIEnv *env, jobject inst
 
     const char *_dst_addr = env->GetStringUTFChars(dst_addr, nullptr);
     const char *_payment_id = env->GetStringUTFChars(payment_id, nullptr);
-    Bitmonero::PendingTransaction::Priority _priority =
-            static_cast<Bitmonero::PendingTransaction::Priority>(priority);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::PendingTransaction::Priority _priority =
+            static_cast<Monero::PendingTransaction::Priority>(priority);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
 
-    Bitmonero::PendingTransaction *tx = wallet->createTransaction(_dst_addr, _payment_id,
+    Monero::PendingTransaction *tx = wallet->createTransaction(_dst_addr, _payment_id,
                                                                   amount, (uint32_t) mixin_count,
                                                                   _priority,
                                                                   (uint32_t) accountIndex);
@@ -983,9 +983,9 @@ Java_one_mayumi_shruum_model_Wallet_createSweepTransaction(JNIEnv *env, jobject 
 
     const char *_dst_addr = env->GetStringUTFChars(dst_addr, nullptr);
     const char *_payment_id = env->GetStringUTFChars(payment_id, nullptr);
-    Bitmonero::PendingTransaction::Priority _priority =
-            static_cast<Bitmonero::PendingTransaction::Priority>(priority);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::PendingTransaction::Priority _priority =
+            static_cast<Monero::PendingTransaction::Priority>(priority);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
 
     Monero::optional<uint64_t> empty;
 
@@ -1002,8 +1002,8 @@ Java_one_mayumi_shruum_model_Wallet_createSweepTransaction(JNIEnv *env, jobject 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_createSweepUnmixableTransactionJ(JNIEnv *env,
                                                                         jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
-    Bitmonero::PendingTransaction *tx = wallet->createSweepUnmixableTransaction();
+    Monero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::PendingTransaction *tx = wallet->createSweepUnmixableTransaction();
     return reinterpret_cast<jlong>(tx);
 }
 
@@ -1013,9 +1013,9 @@ Java_one_mayumi_shruum_model_Wallet_createSweepUnmixableTransactionJ(JNIEnv *env
 JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_Wallet_disposeTransaction(JNIEnv *env, jobject instance,
                                                           jobject pendingTransaction) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
-    Bitmonero::PendingTransaction *_pendingTransaction =
-            getHandle<Bitmonero::PendingTransaction>(env, pendingTransaction);
+    Monero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::PendingTransaction *_pendingTransaction =
+            getHandle<Monero::PendingTransaction>(env, pendingTransaction);
     wallet->disposeTransaction(_pendingTransaction);
 }
 
@@ -1025,7 +1025,7 @@ JNIEXPORT jboolean JNICALL
 Java_one_mayumi_shruum_model_Wallet_exportOutputs(JNIEnv *env, jobject instance,
                                                         jstring filename, jboolean all) {
     const char *_filename = env->GetStringUTFChars(filename, nullptr);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
     bool success = wallet->exportOutputs(_filename, all);
     env->ReleaseStringUTFChars(filename, _filename);
     return static_cast<jboolean>(success);
@@ -1034,7 +1034,7 @@ Java_one_mayumi_shruum_model_Wallet_exportOutputs(JNIEnv *env, jobject instance,
 //virtual TransactionHistory * history() const = 0;
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_getHistoryJ(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return reinterpret_cast<jlong>(wallet->history());
 }
 
@@ -1043,7 +1043,7 @@ Java_one_mayumi_shruum_model_Wallet_getHistoryJ(JNIEnv *env, jobject instance) {
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_Wallet_setListenerJ(JNIEnv *env, jobject instance,
                                                     jobject javaListener) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->setListener(nullptr); // clear old listener
     // delete old listener
     MyWalletListener *oldListener = getHandle<MyWalletListener>(env, instance,
@@ -1064,13 +1064,13 @@ Java_one_mayumi_shruum_model_Wallet_setListenerJ(JNIEnv *env, jobject instance,
 
 JNIEXPORT jint JNICALL
 Java_one_mayumi_shruum_model_Wallet_getDefaultMixin(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->defaultMixin();
 }
 
 JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_Wallet_setDefaultMixin(JNIEnv *env, jobject instance, jint mixin) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return wallet->setDefaultMixin(mixin);
 }
 
@@ -1081,7 +1081,7 @@ Java_one_mayumi_shruum_model_Wallet_setUserNote(JNIEnv *env, jobject instance,
     const char *_txid = env->GetStringUTFChars(txid, nullptr);
     const char *_note = env->GetStringUTFChars(note, nullptr);
 
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
 
     bool success = wallet->setUserNote(_txid, _note);
 
@@ -1097,7 +1097,7 @@ Java_one_mayumi_shruum_model_Wallet_getUserNote(JNIEnv *env, jobject instance,
 
     const char *_txid = env->GetStringUTFChars(txid, nullptr);
 
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
 
     std::string note = wallet->getUserNote(_txid);
 
@@ -1111,7 +1111,7 @@ Java_one_mayumi_shruum_model_Wallet_getTxKey(JNIEnv *env, jobject instance,
 
     const char *_txid = env->GetStringUTFChars(txid, nullptr);
 
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
 
     std::string txKey = wallet->getTxKey(_txid);
 
@@ -1126,7 +1126,7 @@ Java_one_mayumi_shruum_model_Wallet_addAccount(JNIEnv *env, jobject instance,
 
     const char *_label = env->GetStringUTFChars(label, nullptr);
 
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->addSubaddressAccount(_label);
 
     env->ReleaseStringUTFChars(label, _label);
@@ -1137,7 +1137,7 @@ JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_Wallet_getSubaddressLabel(JNIEnv *env, jobject instance,
                                                           jint accountIndex, jint addressIndex) {
 
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
 
     std::string label = wallet->getSubaddressLabel((uint32_t) accountIndex,
                                                    (uint32_t) addressIndex);
@@ -1153,7 +1153,7 @@ Java_one_mayumi_shruum_model_Wallet_setSubaddressLabel(JNIEnv *env, jobject inst
 
     const char *_label = env->GetStringUTFChars(label, nullptr);
 
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->setSubaddressLabel(accountIndex, addressIndex, _label);
 
     env->ReleaseStringUTFChars(label, _label);
@@ -1162,7 +1162,7 @@ Java_one_mayumi_shruum_model_Wallet_setSubaddressLabel(JNIEnv *env, jobject inst
 // virtual size_t numSubaddressAccounts() const = 0;
 JNIEXPORT jint JNICALL
 Java_one_mayumi_shruum_model_Wallet_getNumAccounts(JNIEnv *env, jobject instance) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return static_cast<jint>(wallet->numSubaddressAccounts());
 }
 
@@ -1170,7 +1170,7 @@ Java_one_mayumi_shruum_model_Wallet_getNumAccounts(JNIEnv *env, jobject instance
 JNIEXPORT jint JNICALL
 Java_one_mayumi_shruum_model_Wallet_getNumSubaddresses(JNIEnv *env, jobject instance,
                                                           jint accountIndex) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     return static_cast<jint>(wallet->numSubaddresses(accountIndex));
 }
 
@@ -1181,7 +1181,7 @@ Java_one_mayumi_shruum_model_Wallet_addSubaddress(JNIEnv *env, jobject instance,
                                                      jstring label) {
 
     const char *_label = env->GetStringUTFChars(label, nullptr);
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->addSubaddress(accountIndex, _label);
     env->ReleaseStringUTFChars(label, _label);
 }
@@ -1190,7 +1190,7 @@ Java_one_mayumi_shruum_model_Wallet_addSubaddress(JNIEnv *env, jobject instance,
 Java_one_mayumi_shruum_model_Wallet_getLastSubaddress(JNIEnv *env, jobject instance,
                                                          jint accountIndex) {
 
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     size_t num = wallet->numSubaddresses(accountIndex);
     //wallet->subaddress()->getAll()[num]->getAddress().c_str()
     Monero::Subaddress *s = wallet->subaddress();
@@ -1205,7 +1205,7 @@ Java_one_mayumi_shruum_model_Wallet_signMessage(JNIEnv *env, jobject instance,
 
     const char *_message = env->GetStringUTFChars(message, nullptr);
 
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
 
     env->ReleaseStringUTFChars(message, _message);
 
@@ -1220,7 +1220,7 @@ Java_one_mayumi_shruum_model_Wallet_verifySignedMessage(JNIEnv *env, jobject ins
     const char *_address = env->GetStringUTFChars(address, nullptr);
     const char *_signature = env->GetStringUTFChars(signature, nullptr);
 
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     bool valid = wallet->verifySignedMessage(_message, _address, _signature);
     env->ReleaseStringUTFChars(message, _message);
     env->ReleaseStringUTFChars(address, _address);
@@ -1238,7 +1238,7 @@ Java_one_mayumi_shruum_model_Wallet_verifySignedMessage(JNIEnv *env, jobject ins
 // TransactionHistory
 JNIEXPORT jint JNICALL
 Java_one_mayumi_shruum_model_TransactionHistory_getCount(JNIEnv *env, jobject instance) {
-    Bitmonero::TransactionHistory *history = getHandle<Bitmonero::TransactionHistory>(env,
+    Monero::TransactionHistory *history = getHandle<Monero::TransactionHistory>(env,
                                                                                       instance);
     return history->count();
 }
@@ -1264,7 +1264,7 @@ jobject newTransferList(JNIEnv *env, Bitmonero::TransactionInfo *info) {
     jobject result = env->NewObject(class_ArrayList, java_util_ArrayList_,
                                     static_cast<jint> (transfers.size()));
     // create Transfer objects and stick them in the List
-    for (const Bitmonero::TransactionInfo::Transfer &s: transfers) {
+    for (const Monero::TransactionInfo::Transfer &s: transfers) {
         jobject element = newTransferInstance(env, s.amount, s.address);
         env->CallBooleanMethod(result, java_util_ArrayList_add, element);
         env->DeleteLocalRef(element);
@@ -1272,7 +1272,7 @@ jobject newTransferList(JNIEnv *env, Bitmonero::TransactionInfo *info) {
     return result;
 }
 
-jobject newTransactionInfo(JNIEnv *env, Bitmonero::TransactionInfo *info) {
+jobject newTransactionInfo(JNIEnv *env, Monero::TransactionInfo *info) {
     jmethodID c = env->GetMethodID(class_TransactionInfo, "<init>",
                                    "(IZZJJJLjava/lang/String;JLjava/lang/String;IIJLjava/lang/String;Ljava/util/List;)V");
     jobject transfers = newTransferList(env, info);
@@ -1280,7 +1280,7 @@ jobject newTransactionInfo(JNIEnv *env, Bitmonero::TransactionInfo *info) {
     jstring _paymentId = env->NewStringUTF(info->paymentId().c_str());
     jstring _label = env->NewStringUTF(info->label().c_str());
     uint32_t subaddrIndex = 0;
-    if (info->direction() == Bitmonero::TransactionInfo::Direction_In)
+    if (info->direction() == Monero::TransactionInfo::Direction_In)
         subaddrIndex = *(info->subaddrIndex().begin());
     jobject result = env->NewObject(class_TransactionInfo, c,
                                     info->direction(),
@@ -1306,7 +1306,7 @@ jobject newTransactionInfo(JNIEnv *env, Bitmonero::TransactionInfo *info) {
 #include <stdio.h>
 #include <stdlib.h>
 
-jobject cpp2java(JNIEnv *env, const std::vector<Bitmonero::TransactionInfo *> &vector) {
+jobject cpp2java(JNIEnv *env, const std::vector<Monero::TransactionInfo *> &vector) {
 
     jmethodID java_util_ArrayList_ = env->GetMethodID(class_ArrayList, "<init>", "(I)V");
     jmethodID java_util_ArrayList_add = env->GetMethodID(class_ArrayList, "add",
@@ -1314,7 +1314,7 @@ jobject cpp2java(JNIEnv *env, const std::vector<Bitmonero::TransactionInfo *> &v
 
     jobject arrayList = env->NewObject(class_ArrayList, java_util_ArrayList_,
                                        static_cast<jint> (vector.size()));
-    for (Bitmonero::TransactionInfo *s: vector) {
+    for (Monero::TransactionInfo *s: vector) {
         jobject info = newTransactionInfo(env, s);
         env->CallBooleanMethod(arrayList, java_util_ArrayList_add, info);
         env->DeleteLocalRef(info);
@@ -1324,7 +1324,7 @@ jobject cpp2java(JNIEnv *env, const std::vector<Bitmonero::TransactionInfo *> &v
 
 JNIEXPORT jobject JNICALL
 Java_one_mayumi_shruum_model_TransactionHistory_refreshJ(JNIEnv *env, jobject instance) {
-    Bitmonero::TransactionHistory *history = getHandle<Bitmonero::TransactionHistory>(env,
+    Monero::TransactionHistory *history = getHandle<Monero::TransactionHistory>(env,
                                                                                       instance);
     history->refresh();
     return cpp2java(env, history->getAll());
@@ -1334,13 +1334,13 @@ Java_one_mayumi_shruum_model_TransactionHistory_refreshJ(JNIEnv *env, jobject in
 
 JNIEXPORT jint JNICALL
 Java_one_mayumi_shruum_model_PendingTransaction_getStatusJ(JNIEnv *env, jobject instance) {
-    Bitmonero::PendingTransaction *tx = getHandle<Bitmonero::PendingTransaction>(env, instance);
+    Monero::PendingTransaction *tx = getHandle<Monero::PendingTransaction>(env, instance);
     return tx->status();
 }
 
 JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_PendingTransaction_getErrorString(JNIEnv *env, jobject instance) {
-    Bitmonero::PendingTransaction *tx = getHandle<Bitmonero::PendingTransaction>(env, instance);
+    Monero::PendingTransaction *tx = getHandle<Monero::PendingTransaction>(env, instance);
     return env->NewStringUTF(tx->errorString().c_str());
 }
 
@@ -1351,7 +1351,7 @@ Java_one_mayumi_shruum_model_PendingTransaction_commit(JNIEnv *env, jobject inst
 
     const char *_filename = env->GetStringUTFChars(filename, nullptr);
 
-    Bitmonero::PendingTransaction *tx = getHandle<Bitmonero::PendingTransaction>(env, instance);
+    Monero::PendingTransaction *tx = getHandle<Monero::PendingTransaction>(env, instance);
     bool success = tx->commit(_filename, overwrite);
 
     env->ReleaseStringUTFChars(filename, _filename);
@@ -1361,26 +1361,26 @@ Java_one_mayumi_shruum_model_PendingTransaction_commit(JNIEnv *env, jobject inst
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_PendingTransaction_getAmount(JNIEnv *env, jobject instance) {
-    Bitmonero::PendingTransaction *tx = getHandle<Bitmonero::PendingTransaction>(env, instance);
+    Monero::PendingTransaction *tx = getHandle<Monero::PendingTransaction>(env, instance);
     return tx->amount();
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_PendingTransaction_getDust(JNIEnv *env, jobject instance) {
-    Bitmonero::PendingTransaction *tx = getHandle<Bitmonero::PendingTransaction>(env, instance);
+    Monero::PendingTransaction *tx = getHandle<Monero::PendingTransaction>(env, instance);
     return tx->dust();
 }
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_PendingTransaction_getFee(JNIEnv *env, jobject instance) {
-    Bitmonero::PendingTransaction *tx = getHandle<Bitmonero::PendingTransaction>(env, instance);
+    Monero::PendingTransaction *tx = getHandle<Monero::PendingTransaction>(env, instance);
     return tx->fee();
 }
 
 // TODO this returns a vector of strings - deal with this later - for now return first one
 JNIEXPORT jstring JNICALL
 Java_one_mayumi_shruum_model_PendingTransaction_getFirstTxIdJ(JNIEnv *env, jobject instance) {
-    Bitmonero::PendingTransaction *tx = getHandle<Bitmonero::PendingTransaction>(env, instance);
+    Monero::PendingTransaction *tx = getHandle<Monero::PendingTransaction>(env, instance);
     std::vector<std::string> txids = tx->txid();
     if (!txids.empty())
         return env->NewStringUTF(txids.front().c_str());
@@ -1390,7 +1390,7 @@ Java_one_mayumi_shruum_model_PendingTransaction_getFirstTxIdJ(JNIEnv *env, jobje
 
 JNIEXPORT jlong JNICALL
 Java_one_mayumi_shruum_model_PendingTransaction_getTxCount(JNIEnv *env, jobject instance) {
-    Bitmonero::PendingTransaction *tx = getHandle<Bitmonero::PendingTransaction>(env, instance);
+    Monero::PendingTransaction *tx = getHandle<Monero::PendingTransaction>(env, instance);
     return tx->txCount();
 }
 
@@ -1422,7 +1422,7 @@ Java_one_mayumi_shruum_model_WalletManager_logDebug(JNIEnv *env, jclass clazz,
     const char *_category = env->GetStringUTFChars(category, nullptr);
     const char *_message = env->GetStringUTFChars(message, nullptr);
 
-    Bitmonero::Wallet::debug(_category, _message);
+    Monero::Wallet::debug(_category, _message);
 
     env->ReleaseStringUTFChars(category, _category);
     env->ReleaseStringUTFChars(message, _message);
@@ -1435,7 +1435,7 @@ Java_one_mayumi_shruum_model_WalletManager_logInfo(JNIEnv *env, jclass clazz,
     const char *_category = env->GetStringUTFChars(category, nullptr);
     const char *_message = env->GetStringUTFChars(message, nullptr);
 
-    Bitmonero::Wallet::info(_category, _message);
+    Monero::Wallet::info(_category, _message);
 
     env->ReleaseStringUTFChars(category, _category);
     env->ReleaseStringUTFChars(message, _message);
@@ -1448,7 +1448,7 @@ Java_one_mayumi_shruum_model_WalletManager_logWarning(JNIEnv *env, jclass clazz,
     const char *_category = env->GetStringUTFChars(category, nullptr);
     const char *_message = env->GetStringUTFChars(message, nullptr);
 
-    Bitmonero::Wallet::warning(_category, _message);
+    Monero::Wallet::warning(_category, _message);
 
     env->ReleaseStringUTFChars(category, _category);
     env->ReleaseStringUTFChars(message, _message);
@@ -1461,7 +1461,7 @@ Java_one_mayumi_shruum_model_WalletManager_logError(JNIEnv *env, jclass clazz,
     const char *_category = env->GetStringUTFChars(category, nullptr);
     const char *_message = env->GetStringUTFChars(message, nullptr);
 
-    Bitmonero::Wallet::error(_category, _message);
+    Monero::Wallet::error(_category, _message);
 
     env->ReleaseStringUTFChars(category, _category);
     env->ReleaseStringUTFChars(message, _message);
@@ -1470,7 +1470,7 @@ Java_one_mayumi_shruum_model_WalletManager_logError(JNIEnv *env, jclass clazz,
 JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_WalletManager_setLogLevel(JNIEnv *env, jclass clazz,
                                                           jint level) {
-    Bitmonero::WalletManagerFactory::setLogLevel(level);
+    Monero::WalletManagerFactory::setLogLevel(level);
 }
 
 JNIEXPORT jstring JNICALL
