@@ -724,7 +724,7 @@ Java_one_mayumi_shruum_model_Wallet_initJ(JNIEnv *env, jobject instance,
 JNIEXPORT void JNICALL
 Java_one_mayumi_shruum_model_Wallet_setRestoreHeight(JNIEnv *env, jobject instance,
                                                         jlong height) {
-    Bitmonero::Wallet *wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet *wallet = getHandle<Monero::Wallet>(env, instance);
     wallet->setRefreshFromBlockHeight((uint64_t) height);
 }
 
