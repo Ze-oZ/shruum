@@ -238,4 +238,3 @@ target_link_libraries(  monerujo
 
                        ${log-lib}
                        )
-      
